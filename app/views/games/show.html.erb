@@ -17,6 +17,6 @@
 
 <p> Tienes = <%= @current_player.hands.last.dice %> <p>
 
-<%# if @current_player == @player_in_turn %>
+<% if @current_player == @player_in_turn %>
 	<%= render 'turns/form_for_turn' %>
-<%# end %>
+<% end %>
