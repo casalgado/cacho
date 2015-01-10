@@ -1,0 +1,22 @@
+<h1>Games#new</h1>
+
+
+<%= form_for @game do |f| %>
+
+	<ul>
+	  <% @users.each do |user| %>
+	      <li>
+	        <%= check_box_tag 'users[]', user.id %>
+	        <%= h user.email %>
+	      </li>
+	  <% end %>
+	</ul>
+
+
+	<br />
+	<br />
+
+
+	<%= f.submit %>
+
+<% end %>

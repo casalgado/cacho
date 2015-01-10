@@ -1,0 +1,23 @@
+
+<%= form_for @turn do |f| %>
+
+	<%= f.hidden_field :player_id, value: @player_in_turn.id %>
+
+	<%= f.label :quantity %>
+	<%= f.text_field :quantity %>
+
+	<%= f.label :face %>
+	<%= f.text_field :face %>
+
+	<%= f.radio_button :guess_type, "normal", :checked => true %>
+	<%= label :guess_type, "Normal" %>
+	<%= f.radio_button :guess_type, "stake" %>
+	<%= label :guess_type, "Cazo" %>
+	<%= f.radio_button :guess_type, "tropical" %>
+	<%= label :guess_type, "Tropical" %>
+	<%= f.radio_button :guess_type, "doubt" %>
+	<%= label :guess_type, "Dudo" %>
+
+	<%= f.submit %>
+
+<% end %>

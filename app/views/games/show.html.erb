@@ -1,0 +1,22 @@
+<h1>Games#show</h1>
+<p>Find me in app/views/games/show.html.erb</p>
+
+
+<ul>
+	<% for player in @game.players %>
+		<li>	<%= player.user.username %> </li>
+		<% if @last_turn.guess_type == "doubt" %> 
+				<li> <%= player.hands.last.dice %> </li>
+		<% end %>
+	<% end %>
+</ul>
+
+<!-- <p> current_player = <%#= @current_player.name %> </p> -->
+<p> player in turn = <%= @player_in_turn.user.username %> </p>
+<p> Dijeron = <%= @last_turn.quantity %> de <%= @last_turn.face %> 's</p>
+
+<p> Tienes = <%= @current_player.hands.last.dice %> <p>
+
+<%# if @current_player == @player_in_turn %>
+	<%= render 'turns/form_for_turn' %>
+<%# end %>
