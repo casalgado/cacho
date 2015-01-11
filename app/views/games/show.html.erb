@@ -24,16 +24,20 @@
 
 <p> Tienes = 
 	<ul class="hands"> 
-		<% for die in player.hands.last.dice %>
+		<% for die in @current_player.hands.last.dice %>
 			<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
 		<% end %>
 	</ul>
 <p>
 
-<%# if @current_player == @player_in_turn %>
+<% if @current_player == @player_in_turn %>
 	<%= render 'turns/form_for_turn' %>
-<%# end %>
+<% end %>
 
 <% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
 	 <%= link_to("new round", game_path(@game, :new_round => true)) %>
+<% else %>
+	<% if @current_player == @player_in_turn %>
+		<%= render 'turns/form_for_turn' %>
+	<% end %>
 <% end %>
