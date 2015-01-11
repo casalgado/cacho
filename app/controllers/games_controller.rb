@@ -20,15 +20,20 @@ class GamesController < ApplicationController
     @user = current_user
     @game = Game.find(params[:id])
     @last_turn = Turn.find(@game.last_turn_id)
-    if @last_turn.guess_type == "doubt" 
-      @player_who_lost = @game.new_round
+    if @last_turn.guess_type == "doubt"
+      @player_who_lost = Turn.find(@game.last_turn_id).who_lost?
+    end
+    if params[:new_round]
+      @game.new_round
     end
     @turn = Turn.new
     @player_in_turn = @player_who_lost || @game.next_player || @game.players.first
+
+    # Determines if user is allowed in game.
     if @user.in_game?(@game)
       @current_player = @game.players.where(:user_id => @user.id).first
     else
-      flash[:error] = "You are not in game"
+      flash[:alert] = "You are not in game"
       redirect_to new_game_path
     end
   end

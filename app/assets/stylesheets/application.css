@@ -11,3 +11,12 @@
  *= require_self
  *= require_tree .
  */
+
+
+ ul.hands li {
+ 	display: inline;
+ }
+
+ li.die {
+ 	margin-left: 10px;
+ }

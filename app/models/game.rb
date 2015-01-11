@@ -57,12 +57,10 @@ class Game < ActiveRecord::Base
 
 	# Starts a new round after someone has guessed doubt - used in gamescontroller#show
 	def new_round # Returns @player_who_lost to optimize controller 
-		@player_who_lost = Turn.find(self.last_turn_id).who_lost?.lose
 		self.remaining_players.each do |player|
 			player.hands.last.new_hand
 		end
 		self.update(:flowing_right => !self.flowing_right, :round => self.round + 1)
-		@player_who_lost
 	end
 
 end

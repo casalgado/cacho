@@ -7,6 +7,9 @@ class TurnsController < ApplicationController
     @game = @turn.player.game
     @turn.update(:round => @game.round, :past_turn_id => @game.last_turn_id)
     if @turn.valid_guess?
+      if @turn.guess_type == "doubt"
+        @player_who_lost = Turn.find(@game.last_turn_id).who_lost?.lose
+      end
       @turn.save
       @game.update(:last_turn_id => @turn.id)
       @game.save # hay que mover esta accion a games update?

@@ -20,7 +20,7 @@ class Player < ActiveRecord::Base
 
 	# Sets rank for player in game, rank indicates player has lost
 	def set_rank
-		self.update(:rank => self.game.players_remaining)
+		self.update(:rank => self.game.players_remaining.count)
 		# to be defined: how to rank player who has won game
 	end
 
