@@ -23,7 +23,7 @@ class GamesController < ApplicationController
     if @last_turn.guess_type == "doubt"
       @player_who_lost = Turn.find(@game.last_turn_id).who_lost?
     end
-    if params[:new_round]
+    if params[:new_round] && @game.round == @last_turn.round
       @game.new_round
     end
     @turn = Turn.new

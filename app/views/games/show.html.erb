@@ -8,11 +8,11 @@
 			<li> LOSER </li>
 		<% end %> 
 		<br />
-		<% if @last_turn.guess_type == "doubt" %> 
+		<%# if @last_turn.guess_type == "doubt" %> 
 				<% for die in player.hands.last.dice %>
 					<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
 				<% end %>
-		<% end %>
+		<%# end %>
 		<br />
 	<% end %>
 </ul>
@@ -32,14 +32,10 @@
 	</ul>
 <p>
 
-<% if @current_player == @player_in_turn %>
-	<%= render 'turns/form_for_turn' %>
-<% end %>
-
-<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
-	 <%= link_to("new round", game_path(@game, :new_round => true)) %>
-<% else %>
-	<% if @current_player == @player_in_turn %>
+<%# if @current_player == @player_in_turn %>
+	<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
+		<%= link_to("new round", game_path(@game, :new_round => true)) %>
+	<% else %>
 		<%= render 'turns/form_for_turn' %>
 	<% end %>
-<% end %>
+<%# end %>
