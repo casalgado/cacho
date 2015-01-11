@@ -8,14 +8,16 @@
 			<li> LOSER </li>
 		<% end %> 
 		<br />
-		<%# if @last_turn.guess_type == "doubt" %> 
+		<% if @last_turn.guess_type == "doubt" %> 
 				<% for die in player.hands.last.dice %>
 					<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
 				<% end %>
-		<%# end %>
+		<% end %>
 		<br />
 	<% end %>
 </ul>
+
+
 
 <!-- <p> current_player = <%#= @current_player.name %> </p> -->
 <p> Le toca el turno a = <%= @player_in_turn.user.username %> </p>
