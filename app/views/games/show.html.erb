@@ -1,28 +1,29 @@
 <h1>Games#show</h1>
 <p> Sesion inicada por: <%= @current_player.user.username %> </p>
+<p> Le toca el turno a: <%= @player_in_turn.user.username %> </p>
 
 <ul class="hands">
 	<% for player in @game.players_remaining %>
 		<li>	<%= player.user.username %> </li>
-		<% if player == @player_who_lost %>
+		<% if player == @player_who_lost && @game.round == @last_turn.round %>
 			<li> LOSER </li>
 		<% end %> 
 		<br />
-		<%# if @last_turn.guess_type == "doubt" %> 
-				<% for die in player.hands.last.dice %>
-					<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
-				<% end %>
-		<%# end %>
+		<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
+			<% for die in player.hands.last.dice %>
+				<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
+			<% end %>
+		<% end %>
 		<br />
 	<% end %>
 </ul>
 
 
 
-<!-- <p> current_player = <%#= @current_player.name %> </p> -->
-<p> Le toca el turno a = <%= @player_in_turn.user.username %> </p>
+<% if @last_turn.quantity %>
+<p> Dijeron = <%= @last_turn.quantity %> <%= image_tag("Face#{@last_turn.face}.png") %> </p>
+<% end %> 
 
-<p> Dijeron = <%= @last_turn.quantity %> de <%= @last_turn.face %> 's</p>
 
 <p> Tienes = 
 	<ul class="hands"> 
@@ -32,10 +33,13 @@
 	</ul>
 <p>
 
-<%# if @current_player == @player_in_turn %>
+
+
+<% if @current_player == @player_in_turn %>
+<h3> Es tu turno </h3>
 	<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
 		<%= link_to("new round", game_path(@game, :new_round => true)) %>
 	<% else %>
 		<%= render 'turns/form_for_turn' %>
 	<% end %>
-<%# end %>
+<% end %>
