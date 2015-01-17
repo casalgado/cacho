@@ -1,5 +1,14 @@
 class Game < ActiveRecord::Base
 
+	# Virtual Attributes
+	
+	attr_accessor :user_ids
+
+	# Callbacks
+
+	after_create :load_players
+	after_create :load_first_turn
+
 	# Associations
 
 	has_many :players
@@ -11,15 +20,18 @@ class Game < ActiveRecord::Base
 
 
 	# Loads players in games - used in gamescontroller#create
-	def load_players(array)
-		array.shuffle!.each do |user_id|
-    	player = User.find(user_id).players.create(:position => array.index(user_id), :game_id => self.id)
-    	hand = player.hands.create
-    	5.times do 
-    		hand.dice << Die.new.roll
-    	end
-    	hand.save
+
+	def load_players
+		self.user_ids.shuffle!.each do |user_id|
+    	player = User.find(user_id).players.create(:position => self.user_ids.index(user_id), :game_id => self.id)
+    	hand = player.hands.create # move a after create del player. 
    	end
+ 	end
+
+ 	# Loads first turn of game
+
+ 	def load_first_turn
+ 		self.players.last.turns.create(:round => 1)
  	end
 
   # (3) Used to determine dice in and off table
@@ -28,7 +40,7 @@ class Game < ActiveRecord::Base
 	end
 
 	def dice_on_table # returns array
-  	self.hands.where(:round => Turn.find(self.last_turn_id).round).pluck(:dice).flatten!
+  	self.hands.where(:round => self.turns.last.round).pluck(:dice).flatten!
 	end
 
 	def dice_off_table # returns integer
@@ -40,13 +52,13 @@ class Game < ActiveRecord::Base
 		self.players.where(:rank => nil)
 	end
 
-
 	# Determines next player in game based on last turn - used in gamescontroller#show
 	def next_player
 		var = -1
 		var = 1 if flowing_right
-		@players_remaining = self.players_remaining
-		@players_remaining[(@players_remaining.index(Turn.find(self.last_turn_id).player) + var) % @players_remaining.size] if Turn.find(self.last_turn_id).player 
+		players_remaining = self.players_remaining
+		last_turn = self.turns.last
+		players_remaining[(players_remaining.index(last_turn.player) + var) % players_remaining.size]
 	end
 
 
@@ -56,9 +68,9 @@ class Game < ActiveRecord::Base
 	end
 
 	# Starts a new round after someone has guessed doubt - used in gamescontroller#show
-	def new_round # Returns @player_who_lost to optimize controller 
+	def new_round 
 		self.remaining_players.each do |player|
-			player.hands.last.new_hand
+			player.hands.create
 		end
 		self.update(:flowing_right => !self.flowing_right, :round => self.round + 1)
 	end

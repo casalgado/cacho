@@ -1,4 +1,6 @@
 class HandsController < ApplicationController
+
+
   def new
   end
 
@@ -19,4 +21,8 @@ class HandsController < ApplicationController
 
   def delete
   end
+
+
+
+
 end

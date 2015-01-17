@@ -1,20 +1,19 @@
 class TurnsController < ApplicationController
+  
+  
+
   def new
   end
 
   def create
     @turn = Turn.new(turn_params)
     @game = @turn.player.game
-    @turn.update(:round => @game.round, :past_turn_id => @game.last_turn_id)
-    if @turn.valid_guess?
+    if @turn.save
       if @turn.guess_type == "doubt"
         @turn.who_lost?.lose
       end
-      @turn.save
-      @game.update(:last_turn_id => @turn.id)
-      @game.save # hay que mover esta accion a games update?
     else
-      flash[:alert] = "no puedes decir eso"
+      flash[:alert] = @turn.errors.messages[:base][0]
     end
     redirect_to game_path(@game)
   end

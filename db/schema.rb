@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20150109230009) do
     t.integer  "face"
     t.integer  "quantity"
     t.string   "guess_type"
-    t.integer  "past_turn_id", default: 1
+    t.integer  "past_turn_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

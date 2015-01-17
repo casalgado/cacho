@@ -1,5 +1,14 @@
 class Turn < ActiveRecord::Base
 
+	# Callbacks
+
+	before_validation :load_attributes
+	# Agregar un callback para clear los quantitys-faces si es tropical o doubt
+
+	# Validations
+
+	validates_with GuessValidator
+
 	# Associations
 
   belongs_to :player
@@ -7,37 +16,7 @@ class Turn < ActiveRecord::Base
   # Methods
 
   # To determine if a is valid - used in turnscontroller#create
-  def valid_guess?
-  	@last_turn = Turn.find(self.past_turn_id)
-  	if @last_turn.quantity
-  	 	if self.guess_type == "doubt" || self.guess_type == "tropical"
-  	 		true
-  	 	else
-	  		
-	  		if (@last_turn.face == 1) && (self.face != 1)
-					if self.quantity.to_i >= (@last_turn.quantity.to_i * 2) + 1
-						true
-					else
-						false
-					end
-				elsif (@last_turn.face != 1) && (self.face == 1)
-					if self.quantity.to_i >= (@last_turn.quantity.to_i / 2) + 1
-						true
-					else
-						false
-					end
-				else
-					if (self.quantity > @last_turn.quantity) || (self.quantity == @last_turn.quantity && self.face > @last_turn.face)
-						true
-					else
-						false
-					end
-				end
-			end
-  	else
-  		true
-  	end
-  end
+  
 
   # Determines which player lost dice - used in gamescontroller#show
   def who_lost?
@@ -56,5 +35,13 @@ class Turn < ActiveRecord::Base
 			end
 		end
 	end
+
+	private
+
+	def load_attributes
+    game = self.player.game
+    self.round = game.round
+    self.past_turn_id = game.turns.last.id if game.turns.last
+  end
 
 end

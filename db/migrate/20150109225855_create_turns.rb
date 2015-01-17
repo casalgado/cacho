@@ -6,7 +6,7 @@ class CreateTurns < ActiveRecord::Migration
       t.integer :face
       t.integer :quantity
       t.string  :guess_type
-      t.integer :past_turn_id, default: 1
+      t.integer :past_turn_id
 
       t.timestamps
     end

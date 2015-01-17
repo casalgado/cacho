@@ -24,9 +24,9 @@ group :development, :test do
 	gem "guard-rspec", '4.3.1'
 	gem 'debugger', '1.6.8'
 	gem 'mailcatcher'
-
-
 end
+
+
 
 group :production do
 	gem 'pg'

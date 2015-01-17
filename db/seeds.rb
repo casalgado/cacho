@@ -12,4 +12,3 @@ var = 1
 	var += 1
 end
 
-Turn.create(round: 1)
