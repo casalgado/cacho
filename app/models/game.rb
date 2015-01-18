@@ -6,8 +6,8 @@ class Game < ActiveRecord::Base
 
 	# Callbacks
 
-	after_create :load_players
-	after_create :load_first_turn
+	before_validation :load_players
+ 	after_create :load_first_turn
 
 	# Associations
 
@@ -16,23 +16,12 @@ class Game < ActiveRecord::Base
 	has_many :hands, through: :players
 	has_many :turns, through: :players
 
+	# Validations
+
+ 	validates :round, numericality: true
+	validates :players, presence:  true
+
 	# Methods
-
-
-	# Loads players in games - used in gamescontroller#create
-
-	def load_players
-		self.user_ids.shuffle!.each do |user_id|
-    	player = User.find(user_id).players.create(:position => self.user_ids.index(user_id), :game_id => self.id)
-    	hand = player.hands.create # move a after create del player. 
-   	end
- 	end
-
- 	# Loads first turn of game
-
- 	def load_first_turn
- 		self.players.last.turns.create(:round => 1)
- 	end
 
   # (3) Used to determine dice in and off table
 	def starting_dice # returns integer
@@ -61,7 +50,6 @@ class Game < ActiveRecord::Base
 		players_remaining[(players_remaining.index(last_turn.player) + var) % players_remaining.size]
 	end
 
-
 	# Determines players still in game, searches for players without rank. 
 	def remaining_players
 		self.players.where(:rank => nil)
@@ -72,7 +60,23 @@ class Game < ActiveRecord::Base
 		self.remaining_players.each do |player|
 			player.hands.create
 		end
-		self.update(:flowing_right => !self.flowing_right, :round => self.round + 1)
+		self.update_attributes(:flowing_right => !self.flowing_right, :round => self.round + 1)
 	end
+
+	private
+
+	# Loads players in games - used in gamescontroller#create
+	def load_players
+		if self.new_record? && self.players.empty?
+			self.user_ids.shuffle!.each_with_index do |user_id, index|
+				self.players.build(position: index, user_id: user_id)
+	   	end
+	  end
+ 	end
+
+ 	# Loads first turn of game
+ 	def load_first_turn
+ 		self.players.last.turns.build(round: 1)
+ 	end
 
 end

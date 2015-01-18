@@ -13,10 +13,7 @@ class Turn < ActiveRecord::Base
 
   belongs_to :player
 
-  # Methods
-
-  # To determine if a is valid - used in turnscontroller#create
-  
+  # Methods  
 
   # Determines which player lost dice - used in gamescontroller#show
   def who_lost?
@@ -39,9 +36,11 @@ class Turn < ActiveRecord::Base
 	private
 
 	def load_attributes
-    game = self.player.game
-    self.round = game.round
-    self.past_turn_id = game.turns.last.id if game.turns.last
+		if self.round.nil?
+			game = self.player.game
+    	self.round = game.round 
+    	self.past_turn_id = game.turns.last.id if game.turns.last
+    end
   end
 
 end

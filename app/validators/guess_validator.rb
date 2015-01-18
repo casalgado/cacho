@@ -22,4 +22,5 @@ class GuessValidator < ActiveModel::Validator
 			end
 		end
   end
+  
 end

@@ -24,6 +24,14 @@ group :development, :test do
 	gem "guard-rspec", '4.3.1'
 	gem 'debugger', '1.6.8'
 	gem 'mailcatcher'
+	gem "faker", '1.4.3'
+end
+
+
+group :test do
+	gem "capybara", '2.4.4'
+	gem "database_cleaner", '1.3.0'
+	gem "launchy", '2.4.3'
 end
 
 

@@ -1,3 +1,4 @@
+
 class Hand < ActiveRecord::Base
 	
 	serialize :dice, Array

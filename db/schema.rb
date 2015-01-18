@@ -14,7 +14,6 @@
 ActiveRecord::Schema.define(version: 20150109230009) do
 
   create_table "games", force: true do |t|
-    t.integer  "last_turn_id",  default: 1
     t.integer  "round",         default: 1
     t.boolean  "flowing_right", default: true
     t.datetime "created_at"
@@ -46,7 +45,7 @@ ActiveRecord::Schema.define(version: 20150109230009) do
 
   create_table "turns", force: true do |t|
     t.integer  "player_id"
-    t.integer  "round",        default: 1
+    t.integer  "round"
     t.integer  "face"
     t.integer  "quantity"
     t.string   "guess_type"

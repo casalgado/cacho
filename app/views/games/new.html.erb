@@ -9,7 +9,7 @@
 	<ul>
 	  <% @users.each do |user| %>
 	      <li>
-	        <%= check_box_tag 'users[]', user.id %>
+	        <%= check_box_tag 'user_ids[]', user.id %>
 	        <%= h user.email %>
 	      </li>
 	  <% end %>

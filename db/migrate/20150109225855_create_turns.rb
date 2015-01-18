@@ -2,7 +2,7 @@ class CreateTurns < ActiveRecord::Migration
   def change
     create_table :turns do |t|
       t.references :player, index: true
-      t.integer :round, default: 1
+      t.integer :round
       t.integer :face
       t.integer :quantity
       t.string  :guess_type
