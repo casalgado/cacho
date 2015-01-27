@@ -40,12 +40,13 @@
 
 <% if @current_player == @player_in_turn %>
 <h3> Es tu turno </h3>
-<meta http-equiv="refresh" content="5" />
 	<% if @last_turn.showdown? %> 
 		<%= link_to("new round", game_path(@game, :new_round => true)) %>
 	<% else %>
 		<%= render 'turns/form_for_turn' %>
 	<% end %>
+<% else %>
+<meta http-equiv="refresh" content="5" />
 <% end %>
 
 
