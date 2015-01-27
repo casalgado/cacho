@@ -20,9 +20,20 @@
 	<%= label :guess_type, "Cazo" %>
 	<%= f.radio_button :guess_type, "tropical" %>
 	<%= label :guess_type, "Tropical" %>
-	<%= f.radio_button :guess_type, "doubt" %>
-	<%= label :guess_type, "Dudo" %>
 
+	<% unless @game.first_turn? %> 
+		<%= f.radio_button :guess_type, "doubt" %>
+		<%= label :guess_type, "Dudo que hay #{@last_turn.quantity} #{@last_turn.face}" %>
+	<% end %>
 	<%= f.submit %>
+
+	<br />
+
+	<% if @last_turn.guess_type == "tropical" %>
+		<% for turn in @game.tropical_turns %>
+			<%= f.radio_button :guess_type, "#{turn.player.id}" %>
+			<%= label :guess_type, "Dudo el tropical de #{turn.player.user.username}" %>
+		<% end %>
+	<% end %>
 
 <% end %>

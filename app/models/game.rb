@@ -63,6 +63,25 @@ class Game < ActiveRecord::Base
 		self.update_attributes(:flowing_right => !self.flowing_right, :round => self.round + 1)
 	end
 
+	# Returns turns in round where guess was tropical
+	def tropical_turns
+		self.turns.where(guess_type: 'tropical', round: self.round)
+	end
+
+	# Determines if it is the first turn of the round. 
+  def first_turn?
+  	turns_in_round = self.turns.where(round: self.round).count
+  	turns_in_round -= 1 if self.round == 1
+  	turns_in_round == 0
+  end
+
+  # Determines user of last round
+  def round_loser # Returns player
+  	if losing_hand = self.hands.where(lose: true, round: self.round).first
+  		losing_hand.player
+  	end
+  end
+
 	private
 
 	# Loads players in games - used in gamescontroller#create

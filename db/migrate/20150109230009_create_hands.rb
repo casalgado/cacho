@@ -4,7 +4,7 @@ class CreateHands < ActiveRecord::Migration
       t.references :player, index: true
       t.integer :round, default: 1
       t.string :dice
-      t.boolean :lose
+      t.integer :lose, default: 0
 
       t.timestamps
     end

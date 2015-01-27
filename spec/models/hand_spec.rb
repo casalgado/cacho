@@ -22,12 +22,41 @@ describe Hand, type: :model do
 		expect(@hand.round).to eq(1)
 	end
 
-	describe "new_round" do
+	describe "new_round" do # revisar estos tests, deben ser del method roll_dice, no rew_round
+													# new_round es un method de game. 
 
-		it "if hand set to lose is reduced by one die" do
-			@player.lose
+		it "if hand set to lose(1) is reduced by one die" do
+			@player.lose(1)
 			@game.new_round
 			expect(@player.reload.hands.last.dice.size).to eq(4)
+		end
+
+		it "if hand set to lose(2) is reduced by two die" do
+			@player.lose(2)
+			@game.new_round
+			expect(@player.reload.hands.last.dice.size).to eq(3)
+		end
+
+		it "if hand set to lose(-1) and size is 4 or less it is increased by one die" do
+			@player.hands.last.update(dice: [1,2,3,4])
+			@player.lose(-1)
+			@game.new_round
+			expect(@player.reload.hands.last.dice.size).to eq(5)
+		end
+
+		it "if hand set to lose(-1) and size is 5 not increased dice and hand.lose = -1" do
+			@player.lose(-1)
+			@game.new_round
+			expect(@player.reload.hands.last.dice.size).to eq(5)
+			expect(@player.reload.hands.last.lose).to eq(-1)
+		end
+
+		it "if hand set to lose(1) and size is 5 with hand.lose at -1, result should be 5 dice and hand.lose = 0" do
+			@player.hands.last.update(lose: -1)
+			@player.lose(1)
+			@game.new_round
+			expect(@player.reload.hands.last.dice.size).to eq(5)
+			expect(@player.reload.hands.last.lose).to eq(0)
 		end
 
 		it "if hand not set to lose remains with five dice" do
@@ -41,6 +70,8 @@ describe Hand, type: :model do
 		end
 
 	end
+
+
 
 	it "set_rank method" do
 		@player.set_rank

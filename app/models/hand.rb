@@ -13,16 +13,27 @@ class Hand < ActiveRecord::Base
 
   # Methods
 
+  def tropical?
+    self.dice.uniq.size == 5
+  end
+
+  def adjust_dice_quantity
+    self.dice.size - self.lose
+  end
+
 	private
 
   def roll_dice
     previous_hand = self.player.hands.last
     if previous_hand
       self.round = previous_hand.round + 1
-      previous_hand.dice.size.times do
+      previous_hand.adjust_dice_quantity.times do
         self.dice << Die.new.roll
       end
-      self.dice.pop if previous_hand.lose
+      if self.dice.size == 6
+        self.dice.pop
+        self.lose = -1
+      end
     else
       5.times do 
         self.dice << Die.new.roll

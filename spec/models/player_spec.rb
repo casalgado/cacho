@@ -22,14 +22,41 @@ describe Player, :type => :model do
 	describe "lose method" do
 
 		it "test if lose is set to hand" do
-			@player.lose
-			expect(@player.hands.last.lose).to eq(true)
+			@player.lose(1)
+			expect(@player.hands.last.lose).to eq(1)
 		end
 
 		it "test if set_rank is set when hand is one die" do
 			@player.hands.last.update(dice: [1])
-			@player.lose
+			@player.lose(1)
 			expect(@player.rank).to be_truthy
+		end
+	end
+
+	describe "lose_two_dice method" do
+
+		it "Loses player two dice when called" do
+			@player.lose(2)
+			expect(@player.hands.last.dice.size).to eq(5)
+			expect(@player.hands.last.lose).to eq(2)
+		end
+
+	end
+
+	describe "win_one_die method" do
+
+		it "Wins player one die when called - HAS 5 DICE" do
+			@player.hands.last.update(dice: [1,2,3,4,5])
+			@player.lose(-1)
+			expect(@player.hands.last.dice.size).to eq(5)
+			expect(@player.hands.last.lose).to eq(-1)
+		end
+
+		it "Wins player one die when called - HAS <5 DICE" do
+			@player.hands.last.update(dice: [1,2,3,4])
+			@player.lose(-1)
+			expect(@player.hands.last.dice.size).to eq(4)
+			expect(@player.hands.last.lose).to eq(-1)
 		end
 
 	end

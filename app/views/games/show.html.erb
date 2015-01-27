@@ -1,8 +1,6 @@
 <!-- <meta http-equiv="refresh" content="5" /> -->
 
-<h1>Games#show</h1>
 <p> Sesion inicada por: <%= @current_player.user.username %> </p>
-<p> Le toca el turno a: <%= @player_in_turn.user.username %> </p>
 
 <ul class="hands">
 	<% for player in @game.players_remaining %>
@@ -11,7 +9,7 @@
 			<li> LOSER </li>
 		<% end %> 
 		<br />
-		<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
+		<% if @last_turn.showdown? %> 
 			<% for die in player.hands.last.dice %>
 				<li class='die'> <%= image_tag("Face#{die}.png") %> </li>
 			<% end %>
@@ -20,11 +18,12 @@
 	<% end %>
 </ul>
 
-
-
+<% if @last_turn.showdown? %>
+	<h3> SHOWDOWN </h3>
+<% end %>
 
 <% if @last_turn.quantity %>
-<p> Dijeron = <%= @last_turn.quantity %> <%= image_tag("Face#{@last_turn.face}.png") %> </p>
+<p> <%= @last_turn.player.user.username %> Dijo <%= @last_turn.quantity %> <%= image_tag("Face#{@last_turn.face}.png") %> </p>
 <% end %> 
 
 
@@ -37,12 +36,37 @@
 <p>
 
 
+<h3> Le toca el turno a: <%= @player_in_turn.user.username %> </h3>
 
 <% if @current_player == @player_in_turn %>
 <h3> Es tu turno </h3>
-	<% if @last_turn.guess_type == "doubt" && @game.round == @last_turn.round %> 
+	<% if @last_turn.showdown? %> 
 		<%= link_to("new round", game_path(@game, :new_round => true)) %>
 	<% else %>
 		<%= render 'turns/form_for_turn' %>
 	<% end %>
 <% end %>
+
+
+
+<!-- <div class="variables">
+	<h4> last turn id         = <%= @last_turn.id %>         </h4>
+	<h4> last turn quantity   = <%= @last_turn.quantity %>   </h4>
+	<h4> last turn face       = <%= @last_turn.face %>       </h4>
+	<h4> last turn guess_type = <%= @last_turn.guess_type %> </h4>
+	<h4>  . </h4>
+	<h4> last turn round = <%= @last_turn.round %> </h4>
+	<h4> game round = <%= @game.round %>           </h4>
+
+	<p> Things to fix: </p>
+	<p> FIXED - 1. Tropical doubting is losing on the wrong player </p>
+	<p> FIXED - 2. Shodown method is taking one turn too much </p>
+	<p> FIXED - 3. Guess validator should not accept nil values on normal guesses </p>
+	<p> FIXED - 4. First turn in game should not allow doubt </p>
+	<p> FIXED - 5. Cambiar el false a lose cuando alguien pierde con 6 </p>
+	<p> FIXED - 6. Que el cazo cuente las aces tambien. </p>
+	<p> FIXED - 7. Que el cazo no reste dados en el shodown las aces tambien. </p>
+	<p> 8. No esta sirviendo con doble tropical.  </p>
+
+
+</div> -->

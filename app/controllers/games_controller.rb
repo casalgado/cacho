@@ -26,11 +26,12 @@ class GamesController < ApplicationController
 
   def show
     @last_turn = @game.turns.last
-    @player_who_lost = @last_turn.who_lost? if @last_turn.guess_type == "doubt"
+    @player_who_lost = @game.round_loser if @last_turn.guess_type == "doubt"
+    @player_who_staked =  @last_turn.player if @last_turn.guess_type == "stake"
     @game.new_round if params[:new_round] && @game.round == @last_turn.round # esta mal
     @turn = Turn.new
     @dice_remaining = @game.starting_dice - @game.dice_off_table
-    @player_in_turn = @player_who_lost || @game.next_player     
+    @player_in_turn = @player_who_staked || @player_who_lost || @game.next_player     
   end
 
   def edit

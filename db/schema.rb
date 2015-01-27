@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20150109230009) do
     t.integer  "player_id"
     t.integer  "round",      default: 1
     t.string   "dice"
-    t.boolean  "lose"
+    t.integer  "lose",       default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

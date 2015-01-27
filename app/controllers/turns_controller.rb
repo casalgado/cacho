@@ -10,7 +10,13 @@ class TurnsController < ApplicationController
     @game = @turn.player.game
     if @turn.save
       if @turn.guess_type == "doubt"
-        @turn.who_lost?.lose
+        @turn.who_lost?.lose(1)
+      elsif @turn.guess_type == "stake"
+        if @turn.won_stake?
+          @turn.player.lose(-1)
+        else
+          @turn.player.lose(2)
+        end
       end
     else
       flash[:alert] = @turn.errors.messages[:base][0]
@@ -36,6 +42,6 @@ class TurnsController < ApplicationController
   private
 
   def turn_params
-    params.require(:turn).permit(:player_id, :quantity, :face, :guess_type)
+    params.require(:turn).permit(:player_id, :quantity, :face, :guess_type, :tropical_id)
   end
 end

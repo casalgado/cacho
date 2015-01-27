@@ -19,13 +19,15 @@ class Player < ActiveRecord::Base
   # Methods
 
 
-  # Tags losing hand and sets rank if player is out of game.
-  def lose
+  # Tags hand for appropiate dice changes and sets rank if player is out of game.
+  # Effects of this method are seen in the :roll_dice callback of the hand model. 
+  def lose(dice)
 		@hand = self.hands.last
-		@hand.update(:lose => true)
-		self.set_rank if @hand.dice.size == 1
+		@hand.update(lose: @hand.lose + dice)
+		self.set_rank if @hand.dice.size - dice <= 0
 		self
 	end
+
 
 	# Sets rank for player in game, rank indicates player has lost.
 	def set_rank
