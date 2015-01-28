@@ -263,18 +263,18 @@ describe Turn, :type => :model do
 
 		it "true ON last turn doubt" do
 			@second_turn = FactoryGirl.create(:turn_doubt, past_turn_id: @first_turn.id, player_id: @player2.id)
-			expect(@second_turn.showdown?).to be true
+			expect(@second_turn.reload.showdown?).to be true
 		end
 
 		it "true ON last turn stake" do
 			@second_turn = FactoryGirl.create(:turn_stake, past_turn_id: @first_turn.id, player_id: @player2.id)
-			expect(@second_turn.showdown?).to be true
+			expect(@second_turn.reload.showdown?).to be true
 		end
 
 		it "false ON different round" do
 			@second_turn = FactoryGirl.create(:turn_doubt, past_turn_id: @first_turn.id, player_id: @player2.id)
 			@game.new_round
-			expect(@second_turn.showdown?).to be false
+			expect(@second_turn.reload.showdown?).to be false
 		end
 	end
 

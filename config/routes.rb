@@ -2,7 +2,7 @@ CachoComoEs::Application.routes.draw do
   
 
   devise_for :users
-  resources :games
+  resources :games 
   resources :players
  	resources :turns
   resources :hands

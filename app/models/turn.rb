@@ -7,8 +7,9 @@ class Turn < ActiveRecord::Base
 
 	# Callbacks
 
-	before_validation :load_attributes
-	after_create :set_appropiate_guess_values
+	before_validation :load_attributes, on: :create
+	after_create      :set_appropiate_guess_values
+	after_create      :tag_losing_player
 
 	# Validations
 
@@ -37,26 +38,26 @@ class Turn < ActiveRecord::Base
 
   # Determines which player lost dice - used in gamescontroller#show
   def who_lost?
-		@past_turn = self.past_turn
-		@last_normal_guess_player = self.game.turns.where(guess_type: 'normal').last.player
-		if @past_turn.guess_type == 'tropical' && self.tropical_id
+		past_turn = self.past_turn
+		last_normal_guess_player = self.game.turns.where(guess_type: 'normal').last.player
+		if past_turn.guess_type == 'tropical' && self.tropical_id
 			if Player.find(self.tropical_id.to_i).hands.last.tropical?
 				self.player
 			else
 				Player.find(self.tropical_id.to_i)
 			end
 		else
-			if @past_turn.face != 1
-				if @past_turn.quantity.to_i <= self.player.game.dice_on_table.count(@past_turn.face) + self.player.game.dice_on_table.count(1)
+			if past_turn.face != 1
+				if past_turn.quantity.to_i <= self.player.game.dice_on_table.count(past_turn.face) + self.player.game.dice_on_table.count(1)
 					self.player
 				else
-					@last_normal_guess_player
+					last_normal_guess_player
 				end
 			else
-				if @past_turn.quantity.to_i <= self.player.game.dice_on_table.count(@past_turn.face)
+				if past_turn.quantity.to_i <= self.player.game.dice_on_table.count(past_turn.face)
 					self.player
 				else
-					@last_normal_guess_player
+					last_normal_guess_player
 				end
 			end
 		end
@@ -92,20 +93,26 @@ class Turn < ActiveRecord::Base
     	self.round = game.round 
     	self.past_turn_id = game.turns.last.id if game.turns.last
     end
-    if self.guess_type.to_i != 0
-    	self.tropical_id = self.guess_type
-    	self.guess_type = 'doubt'
-    end
   end
 
   def set_appropiate_guess_values
   	if self.guess_type == 'doubt'
-  		self.update_attribute(:face, nil) 
-  		self.update_attribute(:quantity, nil) 
+  		self.update_attributes(face: nil, quantity: nil) 
   	elsif self.guess_type == 'tropical'
-  		self.update_attribute(:face, self.past_turn.face) 
-  		self.update_attribute(:quantity, self.past_turn.quantity) 
+  		self.update_attributes(face: self.past_turn.face, quantity: self.past_turn.quantity)
   	end
+  end
+
+  def tag_losing_player
+  	if self.guess_type == "doubt"
+      self.who_lost?.lose(1)
+    elsif self.guess_type == "stake"
+      if self.won_stake?
+ 				self.player.lose(-1)
+      else
+        self.player.lose(2)
+      end
+    end  	
   end
 
 end

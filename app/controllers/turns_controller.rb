@@ -1,23 +1,22 @@
 class TurnsController < ApplicationController
   
   before_action :authenticate_user!
-  
+
   def new
   end
 
   def create
     @turn = Turn.new(turn_params)
+
+    if @turn.guess_type.to_i != 0
+      @turn.tropical_id = @turn.guess_type
+      @turn.guess_type  = 'doubt'
+    end
+
     @game = @turn.player.game
-    if @turn.save
-      if @turn.guess_type == "doubt"
-        @turn.who_lost?.lose(1)
-      elsif @turn.guess_type == "stake"
-        if @turn.won_stake?
-          @turn.player.lose(-1)
-        else
-          @turn.player.lose(2)
-        end
-      end
+
+    if @turn.save # pasar a un after create. 
+
     else
       flash[:alert] = @turn.errors.messages[:base][0]
     end

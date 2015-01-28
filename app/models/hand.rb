@@ -21,6 +21,11 @@ class Hand < ActiveRecord::Base
     self.dice.size - self.lose
   end
 
+  # Updates hand lose value with number of dice lost. 
+  def set_lose(dice)
+    self.update(lose: self.lose + dice)
+  end
+
 	private
 
   def roll_dice

@@ -33,10 +33,6 @@ describe GamesController, type: :controller do
 
 		describe "assigns correct instance variabes" do
 
-			it "assigns @last_turn" do
-				expect(assigns(:last_turn)).to eq(@game.turns.last)
-			end
-
 			it "assigns @turn" do
 				expect(assigns(:turn)).to be_a_new(Turn)
 			end

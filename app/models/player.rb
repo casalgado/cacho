@@ -8,8 +8,8 @@ class Player < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :game
-  has_many  :turns
-  has_many  :hands
+  has_many   :turns
+  has_many   :hands
 
   # Validations
 
@@ -22,9 +22,9 @@ class Player < ActiveRecord::Base
   # Tags hand for appropiate dice changes and sets rank if player is out of game.
   # Effects of this method are seen in the :roll_dice callback of the hand model. 
   def lose(dice)
-		@hand = self.hands.last
-		@hand.update(lose: @hand.lose + dice)
-		self.set_rank if @hand.dice.size - dice <= 0
+		hand = self.hands.last
+		hand.set_lose(dice)
+		self.set_rank if hand.dice.size - dice <= 0
 		self
 	end
 
@@ -37,7 +37,7 @@ class Player < ActiveRecord::Base
 
 	private
 
-	# creates and instance of hand after a player has been created. 
+	# Creates and instance of hand after a player has been created. 
 	def roll_hand
 		if self.new_record? && self.hands.empty?
 			self.hands.build

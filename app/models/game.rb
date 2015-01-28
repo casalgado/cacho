@@ -44,7 +44,7 @@ class Game < ActiveRecord::Base
 	# Determines next player in game based on last turn - used in gamescontroller#show
 	def next_player
 		var = -1
-		var = 1 if flowing_right
+		var = 1 if self.flowing_right
 		players_remaining = self.players_remaining
 		last_turn = self.turns.last
 		players_remaining[(players_remaining.index(last_turn.player) + var) % players_remaining.size]
@@ -75,11 +75,22 @@ class Game < ActiveRecord::Base
   	turns_in_round == 0
   end
 
-  # Determines user of last round
-  def round_loser # Returns player
-  	if losing_hand = self.hands.where(lose: true, round: self.round).first
+  # Determines loser of last round, returns an instance of Player or nil. 
+  def loser_of_round(round)
+  	losing_hand = self.hands.where(round: round).select { |hand| hand.lose.zero? == false }.first
+  	if losing_hand
   		losing_hand.player
   	end
+  end
+
+  # Determines player in turn.
+
+  def player_in_turn
+  	if self.turns.where(round: self.round).exists?
+ 			self.next_player
+ 		else
+ 			self.loser_of_round(self.round-1)
+ 		end
   end
 
 	private

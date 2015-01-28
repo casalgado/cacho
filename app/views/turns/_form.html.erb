@@ -1,7 +1,7 @@
 
 <%= form_for @turn do |f| %>
 
-	<%= f.hidden_field :player_id, value: @player_in_turn.id %>
+	<%= f.hidden_field :player_id, value: @game.player_in_turn.id %>
 
 	<%= f.label :quantity %>
 	<%= f.text_field :quantity %>
@@ -23,13 +23,13 @@
 
 	<% unless @game.first_turn? %> 
 		<%= f.radio_button :guess_type, "doubt" %>
-		<%= label :guess_type, "Dudo que hay #{@last_turn.quantity} #{@last_turn.face}" %>
+		<%= label :guess_type, "Dudo que hay #{@game.turns.last.quantity} #{@game.turns.last.face}" %>
 	<% end %>
 	<%= f.submit %>
 
 	<br />
 
-	<% if @last_turn.guess_type == "tropical" %>
+	<% if @game.turns.last.guess_type == "tropical" %>
 		<% for turn in @game.tropical_turns %>
 			<%= f.radio_button :guess_type, "#{turn.player.id}" %>
 			<%= label :guess_type, "Dudo el tropical de #{turn.player.user.username}" %>

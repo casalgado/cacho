@@ -1,0 +1,9 @@
+
+
+<%= form_for @game do |f| %>
+
+	<%= f.hidden_field :round, value: @game.round %>
+
+	<%= f.submit "New Round" %>
+
+<% end %>

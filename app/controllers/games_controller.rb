@@ -25,19 +25,17 @@ class GamesController < ApplicationController
   end
 
   def show
-    @last_turn = @game.turns.last
-    @player_who_lost = @game.round_loser if @last_turn.guess_type == "doubt"
-    @player_who_staked =  @last_turn.player if @last_turn.guess_type == "stake"
-    @game.new_round if params[:new_round] && @game.round == @last_turn.round # esta mal
+    @game = Game.find(params[:id])
     @turn = Turn.new
-    @dice_remaining = @game.starting_dice - @game.dice_off_table
-    @player_in_turn = @player_who_staked || @player_who_lost || @game.next_player     
   end
 
   def edit
   end
 
   def update
+    @game = Game.find(params[:id])
+    @game.new_round if @game.round == @game.turns.last.round
+    redirect_to game_path(@game)
   end
 
   def delete
