@@ -25,6 +25,8 @@ group :development, :test do
 	gem 'debugger', '1.6.8'
 	gem 'mailcatcher'
 	gem "faker", '1.4.3'
+	gem 'simplecov'
+	gem 'simplecov-rcov'
 end
 
 

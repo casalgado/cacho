@@ -38,15 +38,15 @@
 
 <h3> Le toca el turno a: <%= @game.player_in_turn.user.username %> </h3>
 
-<%# if @current_player == @game.player_in_turn %>
+<% if @current_player == @game.player_in_turn %>
 <h3> Es tu turno </h3>
 	<% if @game.turns.last.showdown? %> 
 		<%= render 'games/update_form' %>
 	<% else %>
 		<%= render 'turns/form' %>
 	<% end %>
-<%# else %>
-<!-- <meta http-equiv="refresh" content="4" /> -->
-<%# end %>
+<% else %>
+  <meta http-equiv="refresh" content="4" />
+<% end %>
 
 
