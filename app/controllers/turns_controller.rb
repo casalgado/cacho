@@ -6,18 +6,13 @@ class TurnsController < ApplicationController
   end
 
   def create
+    @game = Player.find(turn_params[:player_id]).game
     @turn = Turn.new(turn_params)
-
     if @turn.guess_type.to_i != 0
       @turn.tropical_id = @turn.guess_type
       @turn.guess_type  = 'doubt'
     end
-
-    @game = @turn.player.game
-
-    if @turn.save # pasar a un after create. 
-
-    else
+    unless @turn.save
       flash[:alert] = @turn.errors.messages[:base][0]
     end
     redirect_to game_path(@game)

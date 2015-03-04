@@ -16,6 +16,7 @@ class GamesController < ApplicationController
   end
 
   def create
+    
     @game = Game.new(user_ids: params[:user_ids])
     @game.save
     redirect_to game_path(@game)
