@@ -1,0 +1,67 @@
+
+.border {
+	border: 1px solid black;
+}
+
+#babcontainer {
+	position: absolute;
+	width: 350px;
+	margin-left: 200px;
+	height: 500px;
+}
+
+#top-image {
+	position: absolute;
+	width: 208px;
+	height: 190px;
+	top: 10px;
+	left: 71px;
+	z-index: 1;
+	background-image: url('top-image-04.png');
+}
+
+#center-image {
+	width: 208px;
+	height: 218px;
+	position: absolute;
+	top: 142px;
+	left: 71px;
+	background-image: url('center-image-03.png');
+}
+
+.configuration {
+	float: left;
+	width: 100px;
+	list-style-type: none;
+}
+
+.configuration li {
+	width: 80px;
+	height: 80px;
+	margin-top: 15px;
+	cursor: pointer;
+}
+
+.testmargin {
+	margin-top: 1000px;
+}
+
+#config1 {
+	background-image: url('top-image-04.png');
+	background-size: 80px 80px;
+}
+
+#config2 {
+	background-image: url('top-image-05.png');
+	background-size: 80px 80px;
+}
+
+#config3 {
+	background-image: url('top-image-06.png');
+	background-size: 80px 80px;
+}
+
+#config4 {
+	background-image: url('top-image-05.png');
+	background-size: 80px 80px;
+}

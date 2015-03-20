@@ -23,9 +23,8 @@ group :development, :test do
 	gem 'guard', '2.8.2'
 	gem "guard-rspec", '4.3.1'
 	gem 'debugger', '1.6.8'
-	gem 'mailcatcher'
 	gem "faker", '1.4.3'
-	gem 'simplecov'
+	gem 'simplecov', '0.9.1'
 	gem 'simplecov-rcov'
 end
 

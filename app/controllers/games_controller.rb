@@ -42,5 +42,9 @@ class GamesController < ApplicationController
   def delete
   end
 
+  def buildabag
+    
+  end
+
 
 end
