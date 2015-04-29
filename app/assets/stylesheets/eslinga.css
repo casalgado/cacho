@@ -1,0 +1,89 @@
+
+
+#sling-container {
+	width: 800px;
+	height: 400px;
+}
+
+.sling-image {
+	float: left;
+	width: 307px;
+	height: 333px;
+	margin-top: 33px;
+	margin-left: 62px;
+}
+
+#s-left {
+	background-image: url('/assets/fades-04.png');
+}
+
+#s-left-overlay {
+	position: relative;
+	top: -34px;
+	left: -63px;
+	background-image: url('/assets/fades-03.png');
+}
+
+#s-right {
+	background-image: url('/assets/fades-02.png');
+}
+
+#s-right-overlay {
+	position: relative;
+	top: -34px;
+	left: -63px;
+	background-image: url('/assets/fades-01.png');
+}
+
+#sling-infographic {
+	position: absolute;
+	margin-top: 33px;
+	width: 800px;
+	height: 800px;
+}
+
+.hb-container {
+	position: absolute;
+	width: 15px;
+	height: 75px;
+	overflow: hidden;
+}
+
+.excess-container {
+	height: 25px;
+}
+
+#left-hb {
+	top: 150px;
+	left: 350px;
+}
+
+#right-hb {
+	top: 150px;
+	left: 650px;
+}
+
+#excess-hb {
+	top: 125px;
+	left: 650px;
+}
+
+.height-bar {
+	position: relative;
+	top: -1px;
+	left: -1px;
+	margin-top: 76px;
+	width: 15px;
+	height: 75px;
+	background-color: green;
+}
+
+.excess-height-bar {
+	position: relative;
+	top: -1px;
+	left: -1px;
+	width: 15px;
+	height: 75px;
+	background: red;
+}
+

@@ -4,6 +4,7 @@ CachoComoEs::Application.routes.draw do
   devise_for :users
   resources  :games do
   	get 'buildabag', on: :collection
+  	get 'eslinga', on: :collection
   end
   resources  :players
  	resources  :turns
