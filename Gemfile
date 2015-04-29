@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.0'
+ruby '2.2.0'
 
 gem 'rails', '4.0.2'
 gem 'sass-rails', '~> 4.0.0'
@@ -23,7 +23,6 @@ group :development, :test do
 	gem "factory_girl_rails", "4.5.0"
 	gem 'guard', '2.8.2'
 	gem "guard-rspec", '4.3.1'
-	gem 'debugger', '1.6.8'
 	gem "faker", '1.4.3'
 	gem 'simplecov', '0.9.1'
 	gem 'simplecov-rcov'
